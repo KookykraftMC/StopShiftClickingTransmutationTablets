@@ -13,7 +13,6 @@ import static org.bukkit.event.inventory.InventoryAction.HOTBAR_SWAP;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 public class StopShift extends JavaPlugin implements Listener
 {
@@ -28,35 +27,20 @@ public class StopShift extends JavaPlugin implements Listener
     {
         if(e.getInventory() == null)
             return;
-        if(!e.getInventory().getType().name().equals("CHEST"))
+        String title = e.getInventory().getTitle();
+        if(title == null)
             return;
-        if(!e.getClick().isShiftClick())
-            return;
-        if(!e.getInventory().getTitle().equals("container.ee3:transmutationTablet"))
+        if(!title.equals("container.ee3:transmutationTablet"))
             return;
         Player p = (Player) e.getWhoClicked();
-        p.sendMessage(ChatColor.RED + "Do not shift click transmutation tablets!");
-        Vector v = new Vector();
-        v.setX(5.0);
-        v.setZ(5.0);
-        p.setVelocity(v);
+        if(e.getClick().isShiftClick())
+            log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
+        else if(e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD)
+            log.warning(p.getName() + "Tried to use the number key transmutation tablet dupe!");
+        else
+            return;
+        p.getWorld().createExplosion(p.getLocation(), 0F, false);
+        p.sendMessage(ChatColor.RED + "Bad cat!");
         e.setCancelled(true);
-
-    }
-    public void onHotbarSwap(InventoryClickEvent e)
-    {
-        if(e.getInventory() == null)
-            return;
-        if(!e.getInventory().getType().name().equals("CHEST"))
-            return;
-        if(!e.getClick().isShiftClick())
-            return;
-        if(!e.getInventory().getTitle().equals("container.ee3:transmutationTablet"))
-            return;
-        if(e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD) {
-            Player p = (Player) e.getWhoClicked();
-            p.sendMessage(ChatColor.RED + "Bad cat!");
-            e.setCancelled(true);
-        }
     }
 }
