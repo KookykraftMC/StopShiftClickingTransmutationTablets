@@ -25,14 +25,26 @@ public class StopShift extends JavaPlugin implements Listener
     @EventHandler
     public void onShiftClick(InventoryClickEvent e)
     {
+        /*
+         * This is like the messiest thing I've ever written
+         * I will make it better at some point!
+         */
         if(e.getInventory() == null)
             return;
         String title = e.getInventory().getTitle();
         if(title == null)
             return;
+        Player p = (Player) e.getWhoClicked();
+        if(e.getInventory().getName().equals("Pedestal"))
+            if(e.getClick().isShiftClick())
+            {
+                e.setCancelled(true);
+                p.sendMessage(ChatColor.RED + "Bad cat!");
+                p.getWorld().createExplosion(p.getLocation(), 0F, false);
+                return;
+            }
         if(!title.equals("container.ee3:transmutationTablet"))
             return;
-        Player p = (Player) e.getWhoClicked();
         if(e.getClick().isShiftClick())
             log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
         else if(e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD)
