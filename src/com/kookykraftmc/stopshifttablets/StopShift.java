@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class StopShift extends JavaPlugin implements Listener
 {
-    static final Logger log = Bukkit.getLogger();
+    public static final Logger log = Bukkit.getLogger();
     public void onEnable()
     {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
