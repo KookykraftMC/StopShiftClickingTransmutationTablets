@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
@@ -20,6 +21,23 @@ public class StopShift extends JavaPlugin implements Listener
     {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
     }
+
+    /**
+     *
+     * @param e event
+     *          This should only do anything if the player is SolarShrieking.
+     *          Debug AF
+     */
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent e)
+    {
+        if (e.getPlayer().getName().equals("SolarShrieking")) {
+            Player p = (Player) e.getPlayer();
+            p.sendMessage(e.getInventory().getTitle());
+            p.sendMessage(e.getInventory().getName());
+        }
+
+    }
     
     @EventHandler
     public void onShiftClick(InventoryClickEvent e)
@@ -32,13 +50,6 @@ public class StopShift extends JavaPlugin implements Listener
             return;
         }
         Player p = (Player) e.getWhoClicked();
-
-        /**  Debug, ignore   */
-//        if(e.getClick().isShiftClick()){
-//            p.sendMessage("Title: " + e.getInventory().getTitle());
-//            p.sendMessage("Name: " + e.getInventory().getName());
-//            e.setCancelled(false);
-//        }
 
         if(e.getInventory().getName().equals("Pedestal")
                 || e.getInventory().getName().equalsIgnoreCase("Chest")
