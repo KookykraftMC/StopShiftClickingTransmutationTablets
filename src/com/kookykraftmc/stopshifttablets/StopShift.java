@@ -28,19 +28,21 @@ public class StopShift extends JavaPlugin implements Listener
          * This is like the messiest thing I've ever written
          * I will make it better at some point!
          */
-        if(e.getInventory() == null)
+        if(e.getInventory() == null || e.getInventory().getTitle() == null) {
             return;
-        String title = e.getInventory().getTitle();
-        if(title == null)
-            return;
+        }
         Player p = (Player) e.getWhoClicked();
-        /**
-         * This should... work... maybe...
-         * :L
-         */
+
+        /**  Debug, ignore   */
+//        if(e.getClick().isShiftClick()){
+//            p.sendMessage("Title: " + e.getInventory().getTitle());
+//            p.sendMessage("Name: " + e.getInventory().getName());
+//            e.setCancelled(false);
+//        }
+
         if(e.getInventory().getName().equals("Pedestal")
-                || e.getInventory().getName().equalsIgnoreCase("Magical Horse Inventory")
-                || e.getInventory().getTitle().equalsIgnoreCase("Magical Horse Inventory")) {
+                || e.getInventory().getName().equalsIgnoreCase("Chest")
+                || e.getInventory().getTitle().equalsIgnoreCase("Chest")) {
             if(e.getClick().isShiftClick())
             {
                 e.setCancelled(true);
@@ -50,9 +52,9 @@ public class StopShift extends JavaPlugin implements Listener
             }
         }
 
-        if(!title.equals("container.ee3:transmutationTablet")
-                && !(e.getInventory().getName().contains("Magical Horse"))
-                && !(e.getInventory().getTitle().contains("Magical Horse")))
+        if(!e.getInventory().getTitle().equals("container.ee3:transmutationTablet")
+                && !(e.getInventory().getName().equalsIgnoreCase("Chest"))
+                && !(e.getInventory().getTitle().equalsIgnoreCase("Chest")))
             return;
         if(e.getClick().isShiftClick())
             log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
