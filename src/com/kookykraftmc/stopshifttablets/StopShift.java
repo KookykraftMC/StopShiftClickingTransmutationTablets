@@ -34,7 +34,13 @@ public class StopShift extends JavaPlugin implements Listener
         if(title == null)
             return;
         Player p = (Player) e.getWhoClicked();
-        if(e.getInventory().getName().equals("Pedestal") || e.getInventory().getName().equals("Magical Horse Inventory")) {
+        /**
+         * This should... work... maybe...
+         * :L
+         */
+        if(e.getInventory().getName().equals("Pedestal")
+                || e.getInventory().getName().equalsIgnoreCase("Magical Horse Inventory")
+                || e.getInventory().getTitle().equalsIgnoreCase("Magical Horse Inventory")) {
             if(e.getClick().isShiftClick())
             {
                 e.setCancelled(true);
@@ -44,8 +50,10 @@ public class StopShift extends JavaPlugin implements Listener
             }
         }
 
-//        if(!title.equals("container.ee3:transmutationTablet"))
-//            return;
+        if(!title.equals("container.ee3:transmutationTablet")
+                && !(e.getInventory().getName().contains("Magical Horse"))
+                && !(e.getInventory().getTitle().contains("Magical Horse")))
+            return;
         if(e.getClick().isShiftClick())
             log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
         else if(e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD)
