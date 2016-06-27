@@ -1,18 +1,17 @@
 package com.kookykraftmc.stopshifttablets;
 
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 import static org.bukkit.event.inventory.InventoryAction.HOTBAR_MOVE_AND_READD;
 import static org.bukkit.event.inventory.InventoryAction.HOTBAR_SWAP;
-
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class StopShift extends JavaPlugin implements Listener
 {
@@ -35,7 +34,7 @@ public class StopShift extends JavaPlugin implements Listener
         if(title == null)
             return;
         Player p = (Player) e.getWhoClicked();
-        if(e.getInventory().getName().equals("Pedestal"))
+        if(e.getInventory().getName().equals("Pedestal") || e.getInventory().getName().equals("Magical Horse Inventory")) {
             if(e.getClick().isShiftClick())
             {
                 e.setCancelled(true);
@@ -43,8 +42,10 @@ public class StopShift extends JavaPlugin implements Listener
                 p.getWorld().createExplosion(p.getLocation(), 0F, false);
                 return;
             }
-        if(!title.equals("container.ee3:transmutationTablet"))
-            return;
+        }
+
+//        if(!title.equals("container.ee3:transmutationTablet"))
+//            return;
         if(e.getClick().isShiftClick())
             log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
         else if(e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD)
