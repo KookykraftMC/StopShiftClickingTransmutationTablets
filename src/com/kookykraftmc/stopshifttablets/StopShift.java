@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,21 +19,21 @@ public class StopShift extends JavaPlugin implements Listener {
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
     }
-
-    /**
-     * Debug method to get entity names of mobs hit.
-     *
-     * @param e Entity(ies)
-     */
-    @EventHandler
-    public void onEntityInteract(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player && ((Player) e.getDamager()).hasPermission("stopshift.debug")) {
-            Player p = (Player) e.getDamager();
-            p.sendMessage(ChatColor.GOLD + e.getEntity().toString());
-            p.sendMessage(ChatColor.RED + e.getEntityType().toString());
-
-        }
-    }
+//
+//    /**
+//     * Debug method to get entity names of mobs hit.
+//     *0
+//     * @param e Entity(ies)
+//     */
+//    @EventHandler
+//    public void onEntityInteract(EntityDamageByEntityEvent e) {
+//        if (e.getDamager() instanceof Player && ((Player) e.getDamager()).hasPermission("stopshift.debug")) {
+//            Player p = (Player) e.getDamager();
+//            p.sendMessage(ChatColor.GOLD + e.getEntity().toString());
+//            p.sendMessage(ChatColor.RED + e.getEntityType().toString());
+//
+//        }
+//    }
 
     public StopShift() {
         super();
