@@ -18,6 +18,7 @@ public class StopShift extends JavaPlugin implements Listener {
 
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
+        Bukkit.getServer().getPluginManager().registerEvents(new Horse(), this);
     }
 //
 //    /**
