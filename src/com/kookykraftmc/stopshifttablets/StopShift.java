@@ -8,15 +8,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
-import static org.bukkit.event.inventory.InventoryAction.HOTBAR_MOVE_AND_READD;
 import static org.bukkit.event.inventory.InventoryAction.HOTBAR_SWAP;
 
-public class StopShift extends JavaPlugin implements Listener {
+public class StopShift extends JavaPlugin implements Listener
+{
     public static final Logger log = Bukkit.getLogger();
+    private static final HashSet<String> restrictedList = new HashSet<String>();
 
-    public void onEnable() {
+    public void onEnable()
+    {
+        File cfg = new File(getDataFolder(), "config.yml");
+        if (!cfg.exists())
+            saveDefaultConfig();
+        loadCfg();
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getServer().getPluginManager().registerEvents(new Horse(), this);
     }
@@ -36,7 +44,8 @@ public class StopShift extends JavaPlugin implements Listener {
 //        }
 //    }
 
-    public StopShift() {
+    public StopShift()
+    {
         super();
     }
 
@@ -53,25 +62,23 @@ public class StopShift extends JavaPlugin implements Listener {
 
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getInventory().getName().equals("Pedestal")) {
-            if (e.getClick().isShiftClick()) {
-                e.setCancelled(true);
-                p.sendMessage(ChatColor.RED + "Bad cat!");
-                p.getWorld().createExplosion(p.getLocation(), 0F, false);
+        if(restrictedList.contains(e.getInventory().getTitle()))
+        {
+            if(!e.getClick().isShiftClick() && e.getAction() != HOTBAR_SWAP)
                 return;
-            }
+            log.info("[StopShift]" + p.getName() + " tried to " + e.getClick().name() + " on a " + e.getInventory().getTitle());
+            p.getWorld().createExplosion(p.getLocation(), 0F, false);
+            p.sendMessage(ChatColor.RED + this.getConfig().getString("DenyMsg"));
+            e.setCancelled(true);
         }
-
-        if (!e.getInventory().getTitle().equals("container.ee3:transmutationTablet"))
-            return;
-        if (e.getClick().isShiftClick())
-            log.warning(p.getName() + "Tried to shift click with transmutation tablets!");
-        else if (e.getAction() == HOTBAR_SWAP || e.getAction() == HOTBAR_MOVE_AND_READD)
-            log.warning(p.getName() + "Tried to use the number key transmutation tablet dupe!");
-        else
-            return;
-        p.getWorld().createExplosion(p.getLocation(), 0F, false);
-        p.sendMessage(ChatColor.RED + "Bad cat!");
-        e.setCancelled(true);
+    }
+    
+    void loadCfg()
+    {
+        restrictedList.removeAll(restrictedList);
+        for(String title:this.getConfig().getStringList("RestrictedInventories"))
+        {
+            restrictedList.add(title);
+        }
     }
 }

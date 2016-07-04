@@ -4,11 +4,9 @@ Version:
 #Inventories to restrict. Players will not be able to shift click or
 #use number keys to swap from hotbar in these inventories
 RestrictedInventories:
-    -
-
-#Entities to prevent from spawning
-BannedEntities:
-    - 
+    - "container.ee3:transmutationTablet"
+    - "Pedestal"
+    - "Market"
 
 #Message to give people when they try to do a bad thing
 DenyMsg: "Bad Cat!"
